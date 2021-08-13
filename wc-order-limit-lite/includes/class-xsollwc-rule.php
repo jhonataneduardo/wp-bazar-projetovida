@@ -585,18 +585,21 @@ if(!class_exists('XSOLLWC_Rule')){
 				switch($applied_on){
 					case 'amount':
 							$cart_total_amount = apply_filters( 'wcol_cart_total_amount', WC()->cart->total, $wcol_settings, WC()->cart );
-							if($wcol_settings['cart_total_enable_maximum_limit']=='on' && ($cart_total_amount < $wcol_settings['cart_total_minimum_limit'] || $cart_total_amount > $wcol_settings['cart_total_maximum_limit']) ){
-								$applied = true;
-								$min_value = wc_price($wcol_settings['cart_total_minimum_limit']);
-								$max_value = wc_price($wcol_settings['cart_total_maximum_limit']);
-							}elseif($cart_total_amount < $wcol_settings['cart_total_minimum_limit']){
-								$applied = true;
-								$min_value = wc_price($wcol_settings['cart_total_minimum_limit']);
-								$max_value = wc_price($wcol_settings['cart_total_maximum_limit']);
-							}else{
-								$applied = false;
+							$cart_total_quantity = WC()->cart->get_cart_contents_count();
+							if($cart_total_quantity > 1) {
+								if($wcol_settings['cart_total_enable_maximum_limit']=='on' && ($cart_total_amount < $wcol_settings['cart_total_minimum_limit'] || $cart_total_amount > $wcol_settings['cart_total_maximum_limit']) ){
+									$applied = true;
+									$min_value = wc_price($wcol_settings['cart_total_minimum_limit']);
+									$max_value = wc_price($wcol_settings['cart_total_maximum_limit']);
+								}elseif($cart_total_amount < $wcol_settings['cart_total_minimum_limit']){
+									$applied = true;
+									$min_value = wc_price($wcol_settings['cart_total_minimum_limit']);
+									$max_value = wc_price($wcol_settings['cart_total_maximum_limit']);
+								}else{
+									$applied = false;
+								}
+								break;
 							}
-							break;
 					case 'quantity':
 							$cart_contents_count = apply_filters( 'wcol_cart_contents_count', WC()->cart->get_cart_contents_count(), $wcol_settings, WC()->cart );
 							if($wcol_settings['cart_total_enable_maximum_limit']=='on' && ($cart_contents_count < $wcol_settings['cart_total_minimum_limit'] || $cart_contents_count > $wcol_settings['cart_total_maximum_limit']) ){
